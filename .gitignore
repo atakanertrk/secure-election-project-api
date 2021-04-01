@@ -1,0 +1,5 @@
+publish-files/
+WebAPISln/.vs/
+WebAPISln/WebAPI/bin/
+WebAPISln/WebAPI/obj/
+WebAPISln/WebAPI/appsettings.Development.json

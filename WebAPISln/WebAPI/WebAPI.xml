@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:WebAPI.Controllers.AdminController.CreateNewElection">
+            <summary>
+            create new election with information of election description and candidates information 
+            (cannot be updated after creation)
+            (you can add voters after creation)
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.AdminController.AddVotersToElection">
+            <summary>
+            send list of voters email for the specified election
+            email and hashed password will automatically send to added voter manually
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.AdminController.DeleteVoterFromElection">
+            <summary>
+            delete specified voter from the election
+            </summary>
+        </member>
+        <member name="M:WebAPI.DataAccess.SqlServerDataAccess.IsAdminLoginValid(System.String,System.String)">
+            <summary>
+            returns admin id if login is valid,
+            return 0 if login is not valid
+            </summary>
+        </member>
+    </members>
+</doc>
