@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.DataAccess;
 using WebAPI.Helpers;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -28,7 +29,27 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetListOfElections()
         {
-            return Ok();
+            return Ok(_dataAccess.GetAllElections());
+        }
+        [HttpGet]
+        public IActionResult GetCandidatesOfElection([FromQuery] int electionId)
+        {
+            return Ok(_dataAccess.GetCandidatesOfElection(electionId));
+        }
+
+        [HttpGet]
+        public IActionResult GetElectionResultsIfCompleted([FromQuery] int electionId)
+        {
+            List<string> decryptedVotes = new List<string>();
+            if (_dataAccess.GetElectionDetailsFromId(electionId).IsCompleted == true)
+            {
+                List<string> votes = _dataAccess.GetVotesOfElection(electionId);
+                foreach (string vote in votes)
+                {
+                    decryptedVotes.Add(RSAHelper.DecryptRSA(vote, Keys.PrivKey, "utf8"));
+                }
+            }
+            return Ok(decryptedVotes);
         }
 
 

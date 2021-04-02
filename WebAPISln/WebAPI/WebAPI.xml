@@ -4,27 +4,48 @@
         <name>WebAPI</name>
     </assembly>
     <members>
-        <member name="M:WebAPI.Controllers.AdminController.CreateNewElection">
+        <member name="M:WebAPI.Controllers.AdminController.CreateNewElection(WebAPI.Models.CreateElectionModel)">
             <summary>
             create new election with information of election description and candidates information 
             (cannot be updated after creation)
             (you can add voters after creation)
             </summary>
         </member>
-        <member name="M:WebAPI.Controllers.AdminController.AddVotersToElection">
+        <member name="M:WebAPI.Controllers.AdminController.AddVoterToElection(WebAPI.Models.AddVoterToElectionModelDTO)">
             <summary>
-            send list of voters email for the specified election
-            email and hashed password will automatically send to added voter manually
+            send voter email for the specified election
+            email and hashed password will automatically send to added voter's mail adress manually
             </summary>
         </member>
-        <member name="M:WebAPI.Controllers.AdminController.DeleteVoterFromElection">
+        <member name="M:WebAPI.Controllers.AdminController.DeleteVoterFromElection(WebAPI.Models.DeleteVoterFromElectionModel)">
             <summary>
-            delete specified voter from the election
+            delete specified voter from the election if voter didnt vote yet
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.AdminController.GetCreatedElections">
+            <summary>
+            returns list of election which are created by the admin
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.AdminController.GetVotersOfElection(System.Int32)">
+            <summary>
+            returns list of voter for specified election
+            </summary>
+        </member>
+        <member name="M:WebAPI.Controllers.VoterController.GetElectionsOfVoterByEmail(System.String)">
+            <summary>
+            returns list of election which are the voter has defined to
             </summary>
         </member>
         <member name="M:WebAPI.DataAccess.SqlServerDataAccess.IsAdminLoginValid(System.String,System.String)">
             <summary>
             returns admin id if login is valid,
+            return 0 if login is not valid
+            </summary>
+        </member>
+        <member name="M:WebAPI.DataAccess.SqlServerDataAccess.IsVoterLoginValid(System.String,System.String,System.Int32)">
+            <summary>
+            returns voterid if login is valid,
             return 0 if login is not valid
             </summary>
         </member>
