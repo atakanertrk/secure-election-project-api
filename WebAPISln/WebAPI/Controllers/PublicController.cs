@@ -49,7 +49,16 @@ namespace WebAPI.Controllers
                     decryptedVotes.Add(RSAHelper.DecryptRSA(vote, Keys.PrivKey, "utf8"));
                 }
             }
-            return Ok(decryptedVotes);
+            List<ElectionResultsModel> resultList = new List<ElectionResultsModel>();
+            foreach (var candidate in _dataAccess.GetCandidatesOfElection(electionId))
+            {
+                ElectionResultsModel result = new ElectionResultsModel();
+                result.CandidateId = candidate.Id;
+                result.CandidateName = candidate.Name;
+                result.Votes = decryptedVotes.Where(x=>x == candidate.Id.ToString()).ToList().Count();
+                resultList.Add(result);
+            }
+            return Ok(resultList);
         }
 
 

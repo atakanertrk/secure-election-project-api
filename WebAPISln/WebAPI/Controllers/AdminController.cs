@@ -57,6 +57,10 @@ namespace WebAPI.Controllers
         [HttpPut]
         public IActionResult CreateNewElection([FromBody] CreateElectionModel election)
         {
+            if (election.candidates.Count <=0)
+            {
+                return BadRequest("no candidate included to the election");
+            }
             int adminId = GetIdFromToken();
             election.electionDetails.AdminId = adminId;
             if (election.electionDetails.Description != null && election.electionDetails.Description.Length > 3 && election.electionDetails.Header != null && election.electionDetails.Header.Length > 3)
@@ -111,7 +115,16 @@ namespace WebAPI.Controllers
                     return BadRequest("cannot add voter to election, voter might already added to the election");
                 }
                 SendEmailModel model = new SendEmailModel { Subject = $"Your Password For Election {_dataAccess.GetElectionNameFromId(addModel.ElectionId)}", Body = plainPw, To = addModel.Email };
-                bool isSendSuccess = EmailHelper.Send(model);
+                bool isSendSuccess;
+                try
+                {
+                    isSendSuccess = EmailHelper.Send(model);
+                }
+                catch (Exception)
+                {
+                    _dataAccess.DeleteVoterFromElection(addModel.ElectionId, addModel.Email);
+                    throw;
+                }
                 if (!isSendSuccess)
                 {
                     _dataAccess.DeleteVoterFromElection(addModel.ElectionId,addModel.Email);
@@ -128,12 +141,12 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public IActionResult DeleteVoterFromElection([FromBody] DeleteVoterFromElectionModel model)
         {
-            if (_dataAccess.IsAdminCreatorOfSpecifiedElection(GetIdFromToken(), model.ElectionId) && !_dataAccess.IsUserVoted(model.ElectionId,model.Email))
+            if (_dataAccess.IsAdminCreatorOfSpecifiedElection(GetIdFromToken(), model.ElectionId) && _dataAccess.IsUserVoted(model.ElectionId,model.Email) == false)
             {
                 _dataAccess.DeleteVoterFromElection(model.ElectionId,model.Email);
                 return Ok();
             }
-            return BadRequest("you are not admin of the specified election");
+            return BadRequest("you are not admin of the specified election (or user that trying to delete is voted for election and cannot be deleted)");
         }
 
         /// <summary>

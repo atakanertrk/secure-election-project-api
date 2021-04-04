@@ -75,5 +75,13 @@ namespace WebAPI.Controllers
             }
             return Ok(elections);
         }
+
+
+        [HttpGet]
+        public IActionResult IsVoterVoteForElection([FromQuery] IsVoted isVoted)
+        {
+            bool result = _dataAccess.IsUserVoted(isVoted.electionId,isVoted.email);
+            return Ok(new { isVoted=result.ToString()});
+        }
     }
 }
