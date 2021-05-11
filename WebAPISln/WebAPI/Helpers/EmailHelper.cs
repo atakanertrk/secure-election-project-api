@@ -23,7 +23,7 @@ namespace WebAPI.Helpers
             {
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("guvenliesecim@gmail.com", "Guvenli3secim");
+                client.Credentials = new NetworkCredential("guvenliesecim@gmail.com", "");
                 client.Host = "smtp.gmail.com";
                 client.Port = 587;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
