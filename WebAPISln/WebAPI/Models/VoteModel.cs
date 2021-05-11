@@ -8,7 +8,7 @@ namespace WebAPI.Models
     public class VoteModel
     {
         public string Email { get; set; }
-        public string HashedPw { get; set; }
+        public string Password { get; set; }
         public int ElectionId { get; set; }
         public string Vote { get; set; }
         public int VoterId { get; set; }

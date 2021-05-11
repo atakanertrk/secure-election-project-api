@@ -36,9 +36,10 @@ namespace WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] AdminModel model)
+        public IActionResult Login([FromBody] AdminLoginModel model)
         {
-            int adminId = _dataAccess.IsAdminLoginValid(model.Name, model.HashedPw);
+            string hashedPw = HashingHelper.EncryptSHA256(model.Password);
+            int adminId = _dataAccess.IsAdminLoginValid(model.Name, hashedPw);
             if (adminId == 0)
             {
                 return Unauthorized();
@@ -47,6 +48,15 @@ namespace WebAPI.Controllers
             {
                 return Ok(new { token = _token.GenerateJSONWebToken(adminId,true)});
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult CreateAccount([FromBody] AdminLoginModel model)
+        {
+            string hashedPw = HashingHelper.EncryptSHA256(model.Password);
+            _dataAccess.InsertNewAdmin(model.Name,hashedPw);
+            return Ok();
         }
 
         /// <summary>

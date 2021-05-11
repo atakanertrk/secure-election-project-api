@@ -36,7 +36,8 @@ namespace WebAPI.Controllers
         [HttpPut]
         public IActionResult Vote([FromBody] VoteModel vote)
         {
-            int voterId = _dataAccess.IsVoterLoginValid(vote.Email, vote.HashedPw, vote.ElectionId);
+            string hashedPw = HashingHelper.EncryptSHA256(vote.Password);
+            int voterId = _dataAccess.IsVoterLoginValid(vote.Email, hashedPw, vote.ElectionId);
             if (voterId == 0)
             {
                 return Unauthorized();
@@ -53,7 +54,7 @@ namespace WebAPI.Controllers
             {
                 candidateIds.Add(candidate.Id);
             }
-            if (candidateIds.Contains(Convert.ToInt32(vote.Vote)) == false)
+            if (candidateIds.Contains(Int32.Parse(vote.Vote)) == false)
             {
                 return BadRequest("this candidate is not exist for the specified election ! vote dismissed !");
             }

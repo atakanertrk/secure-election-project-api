@@ -10,7 +10,7 @@ using WebAPI.Models;
 
 namespace WebAPI.DataAccess
 {
-    public class SqlServerDataAccess
+    public class SqlServerDataAccess : IDataAccess
     {
         private readonly string _conStr;
         public SqlServerDataAccess(IConfiguration config)
@@ -34,6 +34,19 @@ namespace WebAPI.DataAccess
                 return cnn.Query<int>(sql, p).ToList().FirstOrDefault();
             }
         }
+
+        public void InsertNewAdmin(string name, string hashedPw)
+        {
+            using (IDbConnection cnn = new SqlConnection(_conStr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@Name", name);
+                p.Add("@HashedPw", hashedPw);
+                string sql = "INSERT INTO Admins (Name,HashedPw) VALUES (@Name,@HashedPw);";
+                cnn.Execute(sql,p);
+            }
+        }
+
         public AdminModel GetAdminDetailsByAdminId(string id)
         {
             using (IDbConnection cnn = new SqlConnection(_conStr))
@@ -100,8 +113,8 @@ namespace WebAPI.DataAccess
             {
                 var p = new DynamicParameters();
                 p.Add("@ElectionId", model.ElectionId);
-                p.Add("@Vote",model.Vote);
-                p.Add("@Voted",true);
+                p.Add("@Vote", model.Vote);
+                p.Add("@Voted", true);
                 p.Add("@Id", model.VoterId);
                 string sql = "INSERT INTO VotesOfElection (ElectionId,Vote) VALUES (@ElectionId,@Vote); UPDATE VotersOfElection SET Voted=@Voted WHERE Id=@Id";
                 cnn.Execute(sql, p);
@@ -155,7 +168,7 @@ namespace WebAPI.DataAccess
             {
                 var p = new DynamicParameters();
                 p.Add("@IsCompleted", status);
-                p.Add("@Id",electionId);
+                p.Add("@Id", electionId);
 
                 string sql = "UPDATE Elections SET IsCompleted=@IsCompleted WHERE Id=@Id;";
 
@@ -182,7 +195,7 @@ namespace WebAPI.DataAccess
             {
                 var p = new DynamicParameters();
                 p.Add("@AdminId", adminId);
-                p.Add("@Id",electionId);
+                p.Add("@Id", electionId);
 
                 string sql = "SELECT COUNT(*) FROM Elections WHERE Id=@Id and AdminId=@AdminId;";
 
@@ -216,7 +229,7 @@ namespace WebAPI.DataAccess
             {
                 string sql = "SELECT Email FROM VotersOfElection WHERE ElectionId=@ElectionId;";
 
-                return cnn.Query<string>(sql,p).ToList();
+                return cnn.Query<string>(sql, p).ToList();
             }
         }
 
@@ -228,7 +241,7 @@ namespace WebAPI.DataAccess
             {
                 string sql = "SELECT ElectionId FROM VotersOfElection WHERE Email=@Email;";
 
-                return cnn.Query<int>(sql,p).ToList();
+                return cnn.Query<int>(sql, p).ToList();
             }
         }
 
@@ -250,16 +263,16 @@ namespace WebAPI.DataAccess
                 return cnn.Query<int>(sql, p).ToList().FirstOrDefault();
             }
         }
-        
+
         public List<string> GetVotesOfElection(int electionId)
         {
             using (IDbConnection cnn = new SqlConnection(_conStr))
             {
                 var p = new DynamicParameters();
-                p.Add("@ElectionId",electionId);
+                p.Add("@ElectionId", electionId);
                 string sql = "SELECT Vote FROM VotesOfElection WHERE ElectionId=@ElectionId;";
 
-                return cnn.Query<string>(sql,p).ToList();
+                return cnn.Query<string>(sql, p).ToList();
             }
         }
 

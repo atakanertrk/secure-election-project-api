@@ -40,27 +40,30 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetElectionResultsIfCompleted([FromQuery] int electionId)
         {
-            List<string> decryptedVotes = new List<string>();
             if (_dataAccess.GetElectionDetailsFromId(electionId).IsCompleted == true)
             {
+                List<string> decryptedVotes = new List<string>();
                 List<string> votes = _dataAccess.GetVotesOfElection(electionId);
                 foreach (string vote in votes)
                 {
                     decryptedVotes.Add(RSAHelper.DecryptRSA(vote, Keys.PrivKey, "utf8"));
                 }
+                List<ElectionResultsModel> resultList = new List<ElectionResultsModel>();
+                foreach (var candidate in _dataAccess.GetCandidatesOfElection(electionId))
+                {
+                    ElectionResultsModel result = new ElectionResultsModel();
+                    result.CandidateId = candidate.Id;
+                    result.CandidateName = candidate.Name;
+                    result.Votes = decryptedVotes.Where(x => x == candidate.Id.ToString()).ToList().Count();
+                    resultList.Add(result);
+                }
+                return Ok(resultList);
             }
-            List<ElectionResultsModel> resultList = new List<ElectionResultsModel>();
-            foreach (var candidate in _dataAccess.GetCandidatesOfElection(electionId))
+            else
             {
-                ElectionResultsModel result = new ElectionResultsModel();
-                result.CandidateId = candidate.Id;
-                result.CandidateName = candidate.Name;
-                result.Votes = decryptedVotes.Where(x=>x == candidate.Id.ToString()).ToList().Count();
-                resultList.Add(result);
+                return BadRequest();
             }
-            return Ok(resultList);
         }
-
 
     }
 }
