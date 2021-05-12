@@ -10,7 +10,7 @@ namespace WebAPI.Helpers
 {
     public static class EmailHelper
     {
-        public static bool Send(SendEmailModel model)
+        public static bool Send(SendEmailModel model, string pw)
         {
             MailMessage m = new MailMessage();
             m.To.Add(model.To);
@@ -23,7 +23,11 @@ namespace WebAPI.Helpers
             {
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
+<<<<<<< HEAD
                 client.Credentials = new NetworkCredential("guvenliesecim@gmail.com", "");
+=======
+                client.Credentials = new NetworkCredential("guvenliesecim@gmail.com", pw);
+>>>>>>> dev
                 client.Host = "smtp.gmail.com";
                 client.Port = 587;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
