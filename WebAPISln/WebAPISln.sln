@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{55FD32DF-609F-4744-B814-21FDB9BD63B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessClassLibrary", "DataAccessClassLibrary\DataAccessClassLibrary.csproj", "{E2955BF9-7585-468A-828E-CE8BF9630CDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessClassLibrary", "DataAccessClassLibrary\DataAccessClassLibrary.csproj", "{E2955BF9-7585-468A-828E-CE8BF9630CDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DataAccessClassLibrary.DataAccess;
 using WebAPI.Helpers;
 using WebAPI.Models;
+using DataAccessClassLibrary.DataAccess;
 using DataAccessClassLibrary.Models;
 
 namespace WebAPI.Controllers
@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
 
         public AdminController(IConfiguration config)
         {
-            _dataAccess = new SqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
+            _dataAccess = new EFSqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
         }
 
@@ -76,6 +76,7 @@ namespace WebAPI.Controllers
             election.electionDetails.AdminId = adminId;
             if (election.electionDetails.Description != null && election.electionDetails.Description.Length > 3 && election.electionDetails.Header != null && election.electionDetails.Header.Length > 3)
             {
+                ElectionModel electionModel = election.electionDetails;
                 int insertedElectionId = _dataAccess.InsertElection(election.electionDetails);
                 foreach (var candidate in election.candidates)
                 {

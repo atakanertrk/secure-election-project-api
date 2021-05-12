@@ -1,9 +1,11 @@
+using DataAccessClassLibrary.EFModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +39,9 @@ namespace WebAPI
             });
 
             services.AddControllers();
+
+            //services.AddDbContext<ElectionDBContext>(options =>
+            //options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnectionString")));
 
             services.AddMvc();
 
@@ -75,24 +80,6 @@ namespace WebAPI
                   IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Configuration["Jwt:VoterKey"]))
               };
           });
-
-            //services.AddAuthentication(o => {
-            //    o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            //     {
-            //         options.TokenValidationParameters = new TokenValidationParameters
-            //         {
-            //             ValidateIssuer = true,
-            //             ValidateAudience = true,
-            //             ValidateLifetime = true,
-            //             ValidateIssuerSigningKey = true,
-            //             ValidIssuer = Configuration["Jwt:Issuer"],
-            //             ValidAudience = Configuration["Jwt:Issuer"],
-            //             IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Configuration["Jwt:AdminKey"]))
-            //         };
-            //     });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

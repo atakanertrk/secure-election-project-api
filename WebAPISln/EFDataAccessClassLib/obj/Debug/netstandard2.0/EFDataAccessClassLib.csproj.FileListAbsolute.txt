@@ -1,0 +1,9 @@
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\bin\Debug\netstandard2.0\EFDataAccessClassLib.deps.json
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\bin\Debug\netstandard2.0\EFDataAccessClassLib.dll
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\bin\Debug\netstandard2.0\EFDataAccessClassLib.pdb
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\obj\Debug\netstandard2.0\EFDataAccessClassLib.csprojAssemblyReference.cache
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\obj\Debug\netstandard2.0\EFDataAccessClassLib.AssemblyInfoInputs.cache
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\obj\Debug\netstandard2.0\EFDataAccessClassLib.AssemblyInfo.cs
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\obj\Debug\netstandard2.0\EFDataAccessClassLib.csproj.CoreCompileInputs.cache
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\obj\Debug\netstandard2.0\EFDataAccessClassLib.dll
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\EFDataAccessClassLib\obj\Debug\netstandard2.0\EFDataAccessClassLib.pdb

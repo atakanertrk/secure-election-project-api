@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
 
         public VoterController(IConfiguration config)
         {
-            _dataAccess = new SqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
+            _dataAccess = new EFSqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
         }
 

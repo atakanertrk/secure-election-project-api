@@ -20,10 +20,12 @@ namespace WebAPI.Controllers
 
         private IDataAccess _dataAccess;
         private TokenHelper _token;
+        private string _conStr;
 
         public PublicController(IConfiguration config)
         {
-            _dataAccess = new SqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
+            _conStr = config.GetConnectionString("SqlServerConnectionString");
+            _dataAccess = new EFSqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
         }
 
