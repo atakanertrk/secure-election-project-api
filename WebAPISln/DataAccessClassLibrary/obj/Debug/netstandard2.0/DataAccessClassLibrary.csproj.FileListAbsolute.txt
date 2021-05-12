@@ -1,0 +1,8 @@
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\obj\Debug\netstandard2.0\DataAccessClassLibrary.AssemblyInfoInputs.cache
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\obj\Debug\netstandard2.0\DataAccessClassLibrary.AssemblyInfo.cs
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\obj\Debug\netstandard2.0\DataAccessClassLibrary.csproj.CoreCompileInputs.cache
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\bin\Debug\netstandard2.0\DataAccessClassLibrary.deps.json
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\bin\Debug\netstandard2.0\DataAccessClassLibrary.dll
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\bin\Debug\netstandard2.0\DataAccessClassLibrary.pdb
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\obj\Debug\netstandard2.0\DataAccessClassLibrary.dll
+C:\Users\ataka\Desktop\Secure-Election-Project-API\WebAPISln\DataAccessClassLibrary\obj\Debug\netstandard2.0\DataAccessClassLibrary.pdb

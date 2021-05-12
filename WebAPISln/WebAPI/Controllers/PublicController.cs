@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI.DataAccess;
+using DataAccessClassLibrary.DataAccess;
 using WebAPI.Helpers;
 using WebAPI.Models;
+using DataAccessClassLibrary.Models;
 
 namespace WebAPI.Controllers
 {
@@ -17,12 +18,12 @@ namespace WebAPI.Controllers
     public class PublicController : ControllerBase
     {
 
-        private SqlServerDataAccess _dataAccess;
+        private IDataAccess _dataAccess;
         private TokenHelper _token;
 
         public PublicController(IConfiguration config)
         {
-            _dataAccess = new SqlServerDataAccess(config);
+            _dataAccess = new SqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
         }
 

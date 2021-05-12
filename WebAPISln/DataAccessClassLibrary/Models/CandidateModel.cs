@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPI.Models
+namespace DataAccessClassLibrary.Models
 {
-    public class ElectionModel
+    public class CandidateModel
     {
         public int Id { get; set; }
-        public string Header { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
-        public int AdminId { get; set; }
-        public bool IsCompleted { get; set; }
+        public int ElectionId { get; set; }
     }
 }

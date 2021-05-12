@@ -7,9 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WebAPI.DataAccess;
+using DataAccessClassLibrary.DataAccess;
 using WebAPI.Helpers;
 using WebAPI.Models;
+using DataAccessClassLibrary.Models;
 
 namespace WebAPI.Controllers
 {
@@ -18,12 +19,12 @@ namespace WebAPI.Controllers
     [Authorize(AuthenticationSchemes ="Admin")]
     public class AdminController : ControllerBase
     {
-        private SqlServerDataAccess _dataAccess;
+        private IDataAccess _dataAccess;
         private TokenHelper _token;
 
         public AdminController(IConfiguration config)
         {
-            _dataAccess = new SqlServerDataAccess(config);
+            _dataAccess = new SqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
         }
 

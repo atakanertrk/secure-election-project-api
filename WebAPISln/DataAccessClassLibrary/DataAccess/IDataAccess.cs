@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using WebAPI.Models;
+﻿using DataAccessClassLibrary.Models;
+using System.Collections.Generic;
 
-namespace WebAPI.DataAccess
+namespace DataAccessClassLibrary.DataAccess
 {
     public interface IDataAccess
     {
@@ -16,6 +16,7 @@ namespace WebAPI.DataAccess
         List<string> GetVotesOfElection(int electionId);
         void InsertCandidateToElection(CandidateModel candidate);
         int InsertElection(ElectionModel m);
+        void InsertNewAdmin(string name, string hashedPw);
         void InsertVote(VoteModel model);
         void InsertVoterToSpecifiedElection(AddVoterToElectionModel model);
         bool IsAdminCreatorOfSpecifiedElection(int adminId, int electionId);

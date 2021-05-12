@@ -1,21 +1,20 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
+using DataAccessClassLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPI.Models;
 
-namespace WebAPI.DataAccess
+namespace DataAccessClassLibrary.DataAccess
 {
     public class SqlServerDataAccess : IDataAccess
     {
         private readonly string _conStr;
-        public SqlServerDataAccess(IConfiguration config)
+        public SqlServerDataAccess(string conStr)
         {
-            _conStr = config.GetConnectionString("SqlServerConnectionString");
+            _conStr = conStr;
         }
         /// <summary>
         /// returns admin id if login is valid,
@@ -43,7 +42,7 @@ namespace WebAPI.DataAccess
                 p.Add("@Name", name);
                 p.Add("@HashedPw", hashedPw);
                 string sql = "INSERT INTO Admins (Name,HashedPw) VALUES (@Name,@HashedPw);";
-                cnn.Execute(sql,p);
+                cnn.Execute(sql, p);
             }
         }
 

@@ -17,6 +17,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessClassLibrary\DataAccessClassLibrary.csproj" />
+  </ItemGroup>
   
 
 </Project>
