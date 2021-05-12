@@ -22,18 +22,9 @@ namespace DataAccessClassLibrary.DataAccess
         }
         public void DeleteVoterFromElection(int electionId, string email)
         {
-            /*
-              department = db.Departments.Where(d => d.Name == "Sales").First();
-                db.Departments.Remove(department);
-                db.SaveChanges();
-             */
             var voterToBeDeleted = _context.VotersOfElection.Where(x => x.ElectionId == electionId && x.Email == email).First();
             _context.VotersOfElection.Remove(voterToBeDeleted);
             _context.SaveChanges();
-            //VotersOfElection votersOfElection = new VotersOfElection { ElectionId = electionId, Email = email };
-            //_context.VotersOfElection.Remove(votersOfElection);
-            //_context.SaveChanges();
-
         }
 
         public AdminModel GetAdminDetailsByAdminId(string id)
@@ -103,13 +94,13 @@ namespace DataAccessClassLibrary.DataAccess
         public void InsertCandidateToElection(CandidateModel candidate)
         {
             var newCandidate = _mapper.Map<Candidates>(candidate);
-            var result = _context.Candidates.Add(newCandidate);
+            _context.Candidates.Add(newCandidate);
             _context.SaveChanges();
         }
 
-        public int InsertElection(ElectionModel m)
+        public int InsertElection(ElectionModel electionModel)
         {
-            var newElection = _mapper.Map<Elections>(m);
+            var newElection = _mapper.Map<Elections>(electionModel);
             var result = _context.Elections.Add(newElection);
             _context.SaveChanges();
             return newElection.Id;
@@ -128,8 +119,7 @@ namespace DataAccessClassLibrary.DataAccess
             _context.VotesOfElection.Add(votesOfElection);
             var voterThatVotes = _context.VotersOfElection.Find(model.VoterId);
             voterThatVotes.Voted = true;
-            _context.Entry(voterThatVotes).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            // _context.VotesOfElection.FromSqlInterpolated($"INSERT INTO VotesOfElection (ElectionId,Vote) VALUES ({model.ElectionId},{model.Vote}); UPDATE VotersOfElection SET Voted={true} WHERE Id={model.VoterId};");
+            _context.Entry(voterThatVotes).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
@@ -143,40 +133,26 @@ namespace DataAccessClassLibrary.DataAccess
         public bool IsAdminCreatorOfSpecifiedElection(int adminId, int electionId)
         {
             // SELECT COUNT(*) FROM Elections WHERE Id=@Id and AdminId=@AdminId
-            var result = _context.Elections.Where(x => x.Id == electionId && x.AdminId == adminId).ToList().FirstOrDefault();
-            if (result == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            var result = _context.Elections.Where(x => x.Id == electionId && x.AdminId == adminId).FirstOrDefault();
+            return result == null ? false : true;
         }
 
         public int IsAdminLoginValid(string name, string hashedPw)
         {
-            var result = _context.Admins.Where(x => x.Name == name && x.HashedPw == hashedPw).ToList().FirstOrDefault();
-            if (result == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return result.Id;
-            }
+            var result = _context.Admins.Where(x => x.Name == name && x.HashedPw == hashedPw).FirstOrDefault();
+            return result == null ? 0 : result.Id;
         }
 
         public bool IsUserVoted(int electionId, string email)
         {
             var result = _context.VotersOfElection.Where(x => x.Email == email && x.ElectionId == electionId).ToList().FirstOrDefault();
-            return result == null ? throw new NullReferenceException("IsvoteRVoted is returned null which was not expected !") : result.Voted;
+            return result == null ? throw new InvalidOperationException("IsvoterVoted returned null, which was not expected, voter probably not exist in db") : result.Voted;
         }
 
         public int IsVoterLoginValid(string email, string hashedPw, int electionId)
         {
             var result = _context.VotersOfElection.Where(x => x.Email == email &&
-                         x.HashedPw == hashedPw && x.ElectionId == electionId).ToList().FirstOrDefault();
+                         x.HashedPw == hashedPw && x.ElectionId == electionId).FirstOrDefault();
             return result == null ? 0 : result.Id;
         }
 
@@ -184,7 +160,7 @@ namespace DataAccessClassLibrary.DataAccess
         {
             var election = _context.Elections.Find(electionId);
             election.IsCompleted = status;
-            _context.Entry(election).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Entry(election).State = EntityState.Modified;
             _context.SaveChanges();
         }
     }

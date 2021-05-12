@@ -10,6 +10,7 @@ using DataAccessClassLibrary.DataAccess;
 using WebAPI.Helpers;
 using WebAPI.Models;
 using DataAccessClassLibrary.Models;
+using DataAccessClassLibrary.EFModels;
 
 namespace WebAPI.Controllers
 {
@@ -22,7 +23,7 @@ namespace WebAPI.Controllers
         private TokenHelper _token;
         private string _conStr;
 
-        public PublicController(IConfiguration config)
+        public PublicController(IConfiguration config, ElectionDBContext context)
         {
             _conStr = config.GetConnectionString("SqlServerConnectionString");
             _dataAccess = new EFSqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));

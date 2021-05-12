@@ -21,11 +21,12 @@ namespace WebAPI.Controllers
     {
         private IDataAccess _dataAccess;
         private TokenHelper _token;
-
+        private string _emailPw;
         public AdminController(IConfiguration config)
         {
             _dataAccess = new EFSqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
+            _emailPw = config.GetValue<string>("Password:EmailPw");
         }
 
         private int GetIdFromToken()
@@ -130,7 +131,7 @@ namespace WebAPI.Controllers
                 bool isSendSuccess;
                 try
                 {
-                    isSendSuccess = EmailHelper.Send(model);
+                    isSendSuccess = EmailHelper.Send(model,_emailPw);
                 }
                 catch (Exception)
                 {
