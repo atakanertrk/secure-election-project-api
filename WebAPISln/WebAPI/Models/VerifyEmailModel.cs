@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Models
 {
-    public class AdminLoginModel
+    public class VerifyEmailModel
     {
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string Code { get; set; }
     }
 }

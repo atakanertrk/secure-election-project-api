@@ -16,13 +16,16 @@ namespace DataAccessClassLibrary.DataAccess
         List<string> GetVotesOfElection(int electionId);
         void InsertCandidateToElection(CandidateModel candidate);
         int InsertElection(ElectionModel m);
-        void InsertNewAdmin(string name, string hashedPw);
+        void InsertNewAdmin(string email, string hashedPw);
         void InsertVote(VoteModel model);
         void InsertVoterToSpecifiedElection(AddVoterToElectionModel model);
         bool IsAdminCreatorOfSpecifiedElection(int adminId, int electionId);
-        int IsAdminLoginValid(string name, string hashedPw);
+        int IsAdminLoginValid(string email, string hashedPw);
         bool IsUserVoted(int electionId, string email);
         int IsVoterLoginValid(string email, string hashedPw, int electionId);
+        void UpdateAdmin(AdminModel admin);
         void UpdateElectionStatus(bool status, int electionId);
+        void DeleteAdmin(string email);
+        AdminModel GetAdminDetailsByAdminEmail(string email);
     }
 }
