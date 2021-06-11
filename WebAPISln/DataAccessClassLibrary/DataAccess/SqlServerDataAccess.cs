@@ -16,32 +16,36 @@ namespace DataAccessClassLibrary.DataAccess
         {
             _conStr = conStr;
         }
+
         /// <summary>
         /// returns admin id if login is valid,
         /// return 0 if login is not valid
         /// </summary>
-        public int IsAdminLoginValid(string name, string hashedPw)
+        public int IsAdminLoginValid(string email, string hashedPw)
         {
             using (IDbConnection cnn = new SqlConnection(_conStr))
             {
                 var p = new DynamicParameters();
-                p.Add("@Name", name);
+                p.Add("@Email", email);
                 p.Add("@HashedPw", hashedPw);
 
-                string sql = "SELECT Id FROM Admins WHERE Name=@Name and HashedPw=@HashedPw";
+                string sql = "SELECT Id FROM Admins WHERE Email=@Email and HashedPw=@HashedPw";
 
                 return cnn.Query<int>(sql, p).ToList().FirstOrDefault();
             }
         }
 
-        public void InsertNewAdmin(string name, string hashedPw)
+        public void UpdateAdmin(AdminModel admin)
         {
             using (IDbConnection cnn = new SqlConnection(_conStr))
             {
                 var p = new DynamicParameters();
-                p.Add("@Name", name);
-                p.Add("@HashedPw", hashedPw);
-                string sql = "INSERT INTO Admins (Name,HashedPw) VALUES (@Name,@HashedPw);";
+                p.Add("@Email", admin.Email);
+                p.Add("@HashedPw", admin.HashedPw);
+                p.Add("@IsEmailValidated", admin.IsEmailValidated);
+                p.Add("@VerificationCode", admin.VerificationCode);
+                string sql = "UPDATE Admins SET HashedPw=@HashedPw, IsEmailValidated=@IsEmailValidated, VerificationCode=@VerificationCode WHERE Email=@Email;";
+
                 cnn.Execute(sql, p);
             }
         }
@@ -58,6 +62,44 @@ namespace DataAccessClassLibrary.DataAccess
                 return cnn.Query<AdminModel>(sql, p).ToList().FirstOrDefault();
             }
         }
+
+        public AdminModel GetAdminDetailsByAdminEmail(string email)
+        {
+            using (IDbConnection cnn = new SqlConnection(_conStr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@Email", email);
+
+                string sql = "SELECT * FROM Admins WHERE Email=@Email;";
+
+                return cnn.Query<AdminModel>(sql, p).FirstOrDefault();
+            }
+        }
+
+        public void DeleteAdmin(string email)
+        {
+            using (IDbConnection cnn = new SqlConnection(_conStr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@Email", email);
+
+                string sql = "DELETE FROM Admins WHERE Email=@Email;";
+                cnn.Execute(sql,p);
+            }
+        }
+
+        public void InsertNewAdmin(string email, string hashedPw)
+        {
+            using (IDbConnection cnn = new SqlConnection(_conStr))
+            {
+                var p = new DynamicParameters();
+                p.Add("@Email", email);
+                p.Add("@HashedPw", hashedPw);
+                string sql = "INSERT INTO Admins (Email,HashedPw) VALUES (@Email,@HashedPw);";
+                cnn.Execute(sql, p);
+            }
+        }
+
         public void InsertVoterToSpecifiedElection(AddVoterToElectionModel model)
         {
             using (IDbConnection cnn = new SqlConnection(_conStr))

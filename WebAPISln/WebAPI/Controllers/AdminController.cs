@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         private string _emailPw;
         public AdminController(IConfiguration config)
         {
-            _dataAccess = new EFSqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
+            _dataAccess = new SqlServerDataAccess(config.GetConnectionString("SqlServerConnectionString"));
             _token = new TokenHelper(config);
             _emailPw = config.GetValue<string>("Password:EmailPw");
         }
@@ -41,15 +41,12 @@ namespace WebAPI.Controllers
         public IActionResult Login([FromBody] AdminLoginModel model)
         {
             string hashedPw = HashingHelper.EncryptSHA256(model.Password);
-            int adminId = _dataAccess.IsAdminLoginValid(model.Name, hashedPw);
-            if (adminId == 0)
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                return Ok(new { token = _token.GenerateJSONWebToken(adminId,true)});
-            }
+            int adminId = _dataAccess.IsAdminLoginValid(model.Email, hashedPw);
+            if (adminId == 0) return Unauthorized();
+            var admin = _dataAccess.GetAdminDetailsByAdminId(adminId.ToString());
+            if (admin.IsEmailValidated == false) 
+                return BadRequest("please verify your email before login");
+            return Ok(new { token = _token.GenerateJSONWebToken(adminId, true) });
         }
 
         [AllowAnonymous]
@@ -57,9 +54,37 @@ namespace WebAPI.Controllers
         public IActionResult CreateAccount([FromBody] AdminLoginModel model)
         {
             string hashedPw = HashingHelper.EncryptSHA256(model.Password);
-            _dataAccess.InsertNewAdmin(model.Name,hashedPw);
-            return Ok();
+            _dataAccess.InsertNewAdmin(model.Email,hashedPw);
+            try
+            {
+                string code = RSAHelper.EncryptRSA(model.Email,Keys.PubKey, "utf8");
+                SendEmailModel send = new SendEmailModel() { Subject = "Verification Code For Admin",Body=code,To=model.Email };
+                EmailHelper.Send(send,_emailPw);
+            }
+            catch (Exception)
+            {
+                _dataAccess.DeleteAdmin(model.Email);
+                throw;
+            }
+            return Ok("created admin account, verify your email before login");
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult VerifyEmail([FromBody] VerifyEmailModel model)
+        {
+            var admin = _dataAccess.GetAdminDetailsByAdminEmail(model.Email);
+            // decrypted code should be equal to Email address
+            string decryptedCode = RSAHelper.DecryptRSA(model.Code,Keys.PrivKey,"utf8");
+            if(decryptedCode == admin.Email)
+            {
+                admin.IsEmailValidated = true;
+                _dataAccess.UpdateAdmin(admin);
+                return Ok("email verified");
+            }
+            return BadRequest("verification code is not valid");
+        }
+
 
         /// <summary>
         /// create new election with information of election description and candidates information 

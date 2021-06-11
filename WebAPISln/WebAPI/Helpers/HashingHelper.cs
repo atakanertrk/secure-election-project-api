@@ -10,6 +10,7 @@ namespace WebAPI.Helpers
     {
         public static string EncryptSHA256(string cipherText)
         {
+            if (string.IsNullOrWhiteSpace(cipherText)) return "cipher text is null or empty";
             var crypt = new System.Security.Cryptography.SHA256Managed();
             var hash = new System.Text.StringBuilder();
             byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(cipherText));
